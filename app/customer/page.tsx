@@ -492,8 +492,8 @@ export default function CustomerApp() {
         <div className="px-6 pt-14 pb-4">
           <div className="flex justify-between items-center mb-4 relative">
             <div><p className="text-zinc-500 text-xs font-semibold uppercase tracking-wider">Entregar en</p><h2 className="text-white text-base font-bold flex items-center gap-1">Casa - Calle Principal 123 <svg className="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"/></svg></h2></div>
-            <div className="absolute left-1/2 -translate-x-1/2 font-black text-2xl tracking-tighter text-white">NODO</div>
-            <img src="/logo.jpg" alt="NODO" className="w-9 h-9 rounded-full object-cover shadow-[0_0_10px_rgba(168,85,247,0.4)] relative z-10" />
+            <div className="absolute left-1/2 -translate-x-1/2 font-black text-3xl tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-emerald-400">NODO</div>
+            <img src="/logo.jpg" alt="NODO" className="w-9 h-9 rounded-xl object-cover shadow-[0_0_10px_rgba(168,85,247,0.4)] relative z-10" />
           </div>
           <form onSubmit={handleAiSearch} className="relative mb-3">
             <div className="absolute left-4 top-1/2 -translate-y-1/2">
@@ -503,17 +503,37 @@ export default function CustomerApp() {
           </form>
           <div className="relative"><svg className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"/></svg><input type="text" placeholder="Buscar restaurantes..." value={search} onChange={e => setSearch(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-purple-500 placeholder:text-zinc-600" /></div>
         </div>
-        <div className="px-6 py-2 flex gap-2 overflow-x-auto no-scrollbar">
-          {categories.map(cat => (<button key={cat} onClick={() => setActiveCategory(cat)} className={`px-4 py-2 rounded-full text-xs font-semibold whitespace-nowrap transition-all ${activeCategory === cat ? 'bg-white text-black' : 'bg-white/5 text-zinc-400 hover:bg-white/10'}`}>{cat}</button>))}
+        <div className="px-6 py-4 flex gap-4 overflow-x-auto no-scrollbar border-b border-white/5">
+          {categories.map(cat => (
+            <button key={cat} onClick={() => setActiveCategory(cat)} className="flex flex-col items-center gap-2 group shrink-0">
+              <div className={`w-14 h-14 rounded-full flex items-center justify-center text-2xl transition-all shadow-lg ${activeCategory === cat ? 'bg-white text-black scale-110 shadow-white/20' : 'bg-white/5 text-white border border-white/10 group-hover:bg-white/10'}`}>
+                {cat === 'Todos' ? '🍴' : cat === 'Mexicana' ? '🌮' : cat === 'Hamburguesas' ? '🍔' : cat === 'Sushi' ? '🍣' : cat === 'Pizza' ? '🍕' : cat === 'Saludable' ? '🥗' : '🍽️'}
+              </div>
+              <span className={`text-[10px] font-bold uppercase tracking-wider transition-colors ${activeCategory === cat ? 'text-white' : 'text-zinc-500 group-hover:text-zinc-300'}`}>{cat}</span>
+            </button>
+          ))}
         </div>
         <div className="flex-1 overflow-y-auto px-6 pb-24 no-scrollbar">
-          <h3 className="text-zinc-400 text-xs font-bold uppercase tracking-widest mt-4 mb-4">{filtered.length} restaurantes</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <h3 className="text-white text-lg font-black tracking-tight mt-6 mb-4">Restaurantes cerca de tu ubicación</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
             {filtered.map(r => (
-              <button key={r.id} onClick={() => openRestaurant(r)} className="w-full bg-white/[0.02] border border-white/5 rounded-2xl p-4 flex items-center gap-4 hover:bg-white/[0.05] transition-all active:scale-[0.98] text-left group">
-                <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center text-4xl group-hover:scale-110 transition-transform">{r.image}</div>
-                <div className="flex-1 min-w-0"><h4 className="text-white font-bold truncate">{r.name}</h4><p className="text-zinc-500 text-xs mt-0.5">{r.category} • {r.distanceKm}km</p><div className="flex items-center gap-3 mt-2"><span className="text-xs text-yellow-500 font-bold">⭐ {r.rating}</span><span className="text-xs text-zinc-600">{r.deliveryTime}</span></div></div>
-                <svg className="w-5 h-5 text-zinc-700 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7"/></svg>
+              <button key={r.id} onClick={() => openRestaurant(r)} className="w-full bg-white/[0.02] border border-white/5 rounded-2xl flex flex-col hover:scale-[1.02] transition-transform overflow-hidden text-left group">
+                <div className="w-full h-32 bg-gradient-to-br from-zinc-800 to-zinc-900 relative flex items-center justify-center text-6xl">
+                  {r.image}
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
+                  {r.deliveryTime && (
+                    <div className="absolute bottom-2 right-2 bg-black/80 backdrop-blur-md px-2 py-1 rounded-lg text-[10px] font-bold text-white border border-white/10">
+                      {r.deliveryTime}
+                    </div>
+                  )}
+                </div>
+                <div className="p-4 w-full">
+                  <h4 className="text-white font-bold text-base truncate">{r.name}</h4>
+                  <div className="flex items-center gap-2 mt-1">
+                    <span className="text-xs text-yellow-500 font-bold bg-yellow-500/10 px-1.5 py-0.5 rounded">⭐ {r.rating}</span>
+                    <span className="text-xs text-zinc-500 truncate">{r.category} • {r.distanceKm}km</span>
+                  </div>
+                </div>
               </button>
             ))}
           </div>
