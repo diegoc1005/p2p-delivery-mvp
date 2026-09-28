@@ -354,8 +354,11 @@ export default function CustomerApp() {
                     <p className="text-zinc-500 italic mt-2 pt-2 border-t border-white/10">{aiBreakdown.reason}</p>
                   </div>
                 )}
-                
-                <div className="flex justify-between text-white font-bold text-lg mt-6 pt-4 border-t border-white/10"><span>Total</span><span>${(foodTotal + deliveryFee).toFixed(2)}</span></div>
+                <div className="flex justify-between text-zinc-400 text-sm mt-4 pt-4 border-t border-white/10">
+                  <span>Comisión NODO (Network Fee)</span>
+                  <span className="text-white font-medium">$0.50</span>
+                </div>
+                <div className="flex justify-between text-white font-bold text-lg mt-3 pt-3 border-t border-white/10"><span>Total</span><span>${(foodTotal + deliveryFee + 0.50).toFixed(2)}</span></div>
                 <button onClick={placeOrder} disabled={!!orderStatus} className="w-full mt-6 py-4 rounded-2xl bg-white text-black font-bold text-lg hover:bg-zinc-200 disabled:opacity-50 transition-all">{orderStatus || 'Confirmar y Pagar'}</button>
               </div>
             )}
@@ -440,8 +443,8 @@ export default function CustomerApp() {
             {[
               { icon: '📍', label: 'Dirección', value: 'Casa - Calle Principal 123' },
               { icon: '🔑', label: 'Rol', value: user.role === 'CUSTOMER' ? 'Cliente' : user.role },
-              { icon: '💳', label: 'Wallet Soroban', value: 'Conectar wallet...' },
-              { icon: '🤖', label: 'Agente IA', value: 'Gemini 2.0 Flash' },
+              { icon: '💳', label: 'Wallet (Account Abstraction)', value: 'Gasless Smart Account ✅' },
+              { icon: '🤖', label: 'Agente IA', value: 'Gemini 3.8 Flash' },
             ].map((item, i) => (
               <div key={i} className="flex items-center justify-between p-4 rounded-xl bg-white/[0.02] border border-white/5">
                 <div className="flex items-center gap-3"><span>{item.icon}</span><span className="text-zinc-400 text-sm">{item.label}</span></div>

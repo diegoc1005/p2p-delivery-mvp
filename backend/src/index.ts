@@ -7,6 +7,7 @@ import jwt from 'jsonwebtoken';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { negotiateDeliveryFee, searchRestaurantsAI } from './ai';
+import { lockEscrow } from './stellar';
 
 dotenv.config();
 
@@ -131,9 +132,11 @@ app.post('/api/orders/create', async (req, res) => {
 
     const deliverySecretCode = Math.floor(100000 + Math.random() * 900000).toString();
     
-    // Simulate Blockchain Consensus (Soroban)
-    await new Promise(r => setTimeout(r, 2000));
-    const smartContractTxHash = require('crypto').randomBytes(32).toString('hex');
+    // Real Blockchain Execution on Stellar Testnet
+    const smartContractTxHash = await lockEscrow(
+      Date.now().toString(),
+      foodTotal + (deliveryFee || 18.5)
+    );
 
     const order = await prisma.order.create({
       data: {

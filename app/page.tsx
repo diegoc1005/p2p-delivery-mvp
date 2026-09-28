@@ -68,6 +68,20 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Video Explicativo */}
+      <section className="max-w-5xl mx-auto px-6 pb-24 md:pb-32 z-10 relative">
+        <div className="aspect-video w-full bg-zinc-900/50 border border-white/10 rounded-[40px] overflow-hidden relative group">
+          <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/10 to-emerald-500/10"></div>
+          {/* Placeholder del Video */}
+          <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
+            <div className="w-20 h-20 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full flex items-center justify-center mb-4 shadow-[0_0_50px_rgba(255,255,255,0.1)] group-hover:scale-110 transition-transform cursor-pointer">
+              <svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </div>
+            <p className="text-zinc-400 font-medium text-sm">Ver manifiesto NODO (01:24)</p>
+          </div>
+        </div>
+      </section>
+
       {/* How It Works */}
       <section id="como-funciona" className="max-w-6xl mx-auto px-6 py-24 md:py-32 z-10 relative">
         <div className="text-center mb-16">
@@ -89,6 +103,46 @@ export default function LandingPage() {
               <p className="text-zinc-500 text-sm leading-relaxed">{s.desc}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Beneficios */}
+      <section id="beneficios" className="max-w-6xl mx-auto px-6 py-24 md:py-32 z-10 relative border-t border-white/5">
+        <div className="text-center mb-16">
+          <p className="text-emerald-400 text-xs font-bold uppercase tracking-widest mb-3">Ganan Todos</p>
+          <h2 className="text-3xl md:text-5xl font-medium tracking-tight">El ecosistema justo</h2>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <AnimatedCard>
+            <div className="text-4xl mb-4">🏪</div>
+            <h3 className="text-xl font-bold text-white mb-2">Para Restaurantes</h3>
+            <p className="text-zinc-400 text-sm leading-relaxed mb-6">Di adiós al 30% de comisión. Vende al precio real de tu menú y obtén liquidaciones instantáneas en USDC sin esperar cortes semanales.</p>
+            <ul className="space-y-2 text-sm text-zinc-300">
+              <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> 0% comisión por venta</li>
+              <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Liquidación atómica</li>
+              <li className="flex items-center gap-2"><span className="text-emerald-400">✓</span> Control de tu clientela</li>
+            </ul>
+          </AnimatedCard>
+          <AnimatedCard delay={100}>
+            <div className="text-4xl mb-4">📱</div>
+            <h3 className="text-xl font-bold text-white mb-2">Para Clientes</h3>
+            <p className="text-zinc-400 text-sm leading-relaxed mb-6">No pagues comida inflada para cubrir los costos de la plataforma. La IA negocia tu tarifa de envío para que siempre sea justa.</p>
+            <ul className="space-y-2 text-sm text-zinc-300">
+              <li className="flex items-center gap-2"><span className="text-purple-400">✓</span> Precios de menú reales</li>
+              <li className="flex items-center gap-2"><span className="text-purple-400">✓</span> Tarifas dinámicas con IA</li>
+              <li className="flex items-center gap-2"><span className="text-purple-400">✓</span> Protección anti-fraude</li>
+            </ul>
+          </AnimatedCard>
+          <AnimatedCard delay={200}>
+            <div className="text-4xl mb-4">🛵</div>
+            <h3 className="text-xl font-bold text-white mb-2">Para Repartidores</h3>
+            <p className="text-zinc-400 text-sm leading-relaxed mb-6">Tú haces el trabajo físico, tú te quedas el 100% de la tarifa de envío. Trabaja directo con los restaurantes y clientes.</p>
+            <ul className="space-y-2 text-sm text-zinc-300">
+              <li className="flex items-center gap-2"><span className="text-blue-400">✓</span> 100% de la tarifa de envío</li>
+              <li className="flex items-center gap-2"><span className="text-blue-400">✓</span> Pagos instantáneos</li>
+              <li className="flex items-center gap-2"><span className="text-blue-400">✓</span> Disputas seguras</li>
+            </ul>
+          </AnimatedCard>
         </div>
       </section>
 
@@ -141,45 +195,6 @@ export default function LandingPage() {
               </div>
             </div>
           </AnimatedCard>
-        </div>
-      </section>
-
-      {/* Metrics */}
-      <section id="metricas" className="max-w-6xl mx-auto px-6 py-24 md:py-32 z-10 relative">
-        <div className="text-center mb-16">
-          <p className="text-emerald-400 text-xs font-bold uppercase tracking-widest mb-3">Impacto</p>
-          <h2 className="text-3xl md:text-5xl font-medium tracking-tight">Los números hablan</h2>
-        </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {[
-            { number: "0%", label: "Comisión para restaurantes", color: "text-emerald-400" },
-            { number: "100%", label: "De la tarifa para el repartidor", color: "text-purple-400" },
-            { number: "~400ms", label: "Negociación IA de tarifa", color: "text-blue-400" },
-            { number: "6 dígitos", label: "PIN anti-fraude criptográfico", color: "text-orange-400" },
-          ].map((m, i) => (
-            <div key={i} className="bg-white/[0.02] border border-white/[0.05] rounded-3xl p-8 text-center hover:bg-white/[0.04] transition-all">
-              <p className={`text-3xl md:text-4xl font-black ${m.color} mb-2`}>{m.number}</p>
-              <p className="text-zinc-500 text-xs font-medium">{m.label}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Tech Stack */}
-      <section className="max-w-6xl mx-auto px-6 py-24 md:py-32 z-10 relative">
-        <div className="text-center mb-16">
-          <p className="text-zinc-500 text-xs font-bold uppercase tracking-widest mb-3">Stack</p>
-          <h2 className="text-3xl md:text-5xl font-medium tracking-tight">Construido con lo mejor</h2>
-        </div>
-        <div className="flex flex-wrap justify-center gap-4">
-          {[
-            "Next.js 16", "TypeScript", "Tailwind CSS", "Express.js", "Prisma ORM", "Socket.io",
-            "Gemini AI", "Solidity", "Hardhat", "SQLite", "JWT Auth", "bcrypt"
-          ].map((tech, i) => (
-            <div key={i} className="px-5 py-2.5 rounded-full bg-white/[0.03] border border-white/[0.08] text-sm text-zinc-300 font-medium hover:bg-white/[0.06] transition-colors">
-              {tech}
-            </div>
-          ))}
         </div>
       </section>
 
