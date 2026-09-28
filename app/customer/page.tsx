@@ -534,7 +534,7 @@ export default function CustomerApp() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" style={{ padding: '0 18px', gap: '20px 14px' }}>
             {filtered.map(r => (
               <button key={r.id} onClick={() => openRestaurant(r)} className="rcard">
-                <span className={`thumb${r.logo ? ' brand' : ''}`}>
+                <span className={`thumb${r.image ? ' brand' : ''}`}>
                   <div style={{fontSize: '4rem', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', background: '#18181b'}}>{r.image}</div>
                   <span className="cat-tag">{r.category}</span>
                 </span>
