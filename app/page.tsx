@@ -21,7 +21,7 @@ export default function LandingPage() {
       <nav className="fixed top-0 w-full z-50 border-b border-white/[0.08] bg-black/40 backdrop-blur-xl supports-[backdrop-filter]:bg-black/20">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <img src="/logo.jpg" alt="NODO Logo" className="w-8 h-8 rounded-lg object-contain shadow-[0_0_15px_rgba(168,85,247,0.5)]" />
+            <img src="/logo.jpg" alt="NODO Logo" className="w-8 h-8 rounded-lg object-cover shadow-[0_0_15px_rgba(168,85,247,0.5)]" />
             <span className="font-bold text-xl tracking-tight">NODO</span>
           </div>
           <div className="hidden md:flex gap-8 text-sm font-medium text-zinc-400">
@@ -243,7 +243,7 @@ export default function LandingPage() {
       <footer className="border-t border-white/[0.08] py-12 text-center text-zinc-600 text-sm">
         <div className="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="flex items-center gap-2">
-            <img src="/logo.jpg" alt="NODO" className="w-5 h-5 object-contain" />
+            <img src="/logo.jpg" alt="NODO" className="w-5 h-5 rounded object-cover" />
             <span className="font-semibold text-zinc-400">NODO Protocol</span>
           </div>
           <p>Diseñado con estándares AAA para GOYA Hack 2026.</p>
