@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import Link from 'next/link';
+import { WalletButton } from '@pollar/react';
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -52,6 +53,16 @@ export default function AuthPage() {
           <h2 className="text-xl font-bold mb-6 text-center">
             {isLogin ? 'Acceso al Protocolo' : 'Unirse a NODO'}
           </h2>
+
+          <div className="flex justify-center mb-4">
+            <WalletButton />
+          </div>
+          
+          <div className="relative flex py-4 items-center">
+             <div className="flex-grow border-t border-zinc-700"></div>
+             <span className="flex-shrink-0 mx-4 text-zinc-500 text-xs">O INGRESA CON CORREO</span>
+             <div className="flex-grow border-t border-zinc-700"></div>
+          </div>
 
           {error && <div className="p-3 mb-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm text-center">{error}</div>}
 
