@@ -7,7 +7,7 @@ export function PollarProviderWrapper({ children }: { children: ReactNode }) {
   return (
     <PollarProvider
       client={{
-        apiKey: "pat_6d9ac2fd4be4182b3be29fe7162226c13f4c6524b81a39ca5dcf93c64265121c",
+        apiKey: "pub_testnet_3205f7beeb231674b94298b0f29ba1be",
         // @ts-ignore
         network: 'stellar',
       }}
