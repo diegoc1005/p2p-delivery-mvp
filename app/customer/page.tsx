@@ -4,6 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { io, Socket } from 'socket.io-client';
 import confetti from 'canvas-confetti';
+import { RampWidget } from '@pollar/react';
 
 type Restaurant = { id: string; name: string; description: string; image: string; category: string; rating: number; deliveryTime: string; distanceKm: number; ownerId: string };
 type MenuItem = { id: string; name: string; description: string; price: number; image: string; category: string };
@@ -45,6 +46,9 @@ export default function CustomerApp() {
 
   // Socket
   const [socket, setSocket] = useState<Socket | null>(null);
+
+  // Pollar Ramp
+  const [showPollarRamp, setShowPollarRamp] = useState(false);
 
   useEffect(() => {
     if (!isLoading) {
@@ -452,9 +456,20 @@ export default function CustomerApp() {
               </div>
             ))}
           </div>
-          <button onClick={logout} className="w-full mt-8 py-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 font-bold text-sm hover:bg-red-500/20 transition-colors">Cerrar Sesión</button>
+          <button onClick={() => setShowPollarRamp(true)} className="w-full mt-8 py-4 rounded-xl bg-gradient-to-r from-blue-500 to-indigo-600 shadow-[0_0_20px_rgba(59,130,246,0.4)] text-white font-bold text-sm hover:scale-[1.02] transition-transform flex items-center justify-center gap-2">
+            <span className="text-xl">💳</span> Depositar USDC (vía Pollar)
+          </button>
+          <button onClick={logout} className="w-full mt-4 py-4 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 font-bold text-sm hover:bg-red-500/20 transition-colors">Cerrar Sesión</button>
         </div>
         <BottomNav />
+        {showPollarRamp && (
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 rounded-[40px]">
+            <div className="w-full max-w-sm bg-white rounded-3xl overflow-hidden relative shadow-2xl">
+              {/* @ts-ignore */}
+              <RampWidget direction="buy" onClose={() => setShowPollarRamp(false)} />
+            </div>
+          </div>
+        )}
       </div>
     </main>
   );

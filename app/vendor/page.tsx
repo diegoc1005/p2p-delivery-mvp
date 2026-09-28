@@ -199,7 +199,8 @@ export default function VendorDashboard() {
       {showPollarRamp && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
           <div className="w-full max-w-md bg-white rounded-3xl overflow-hidden relative shadow-2xl">
-            <RampWidget onClose={() => setShowPollarRamp(false)} />
+            {/* @ts-ignore */}
+            <RampWidget direction="sell" onClose={() => setShowPollarRamp(false)} />
           </div>
         </div>
       )}

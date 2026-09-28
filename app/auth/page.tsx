@@ -66,12 +66,16 @@ export default function AuthPage() {
             {mounted && <WalletButton />}
             
             {mounted && pollar?.isAuthenticated && (
-              <div className="w-full mt-2 animate-in fade-in zoom-in slide-in-from-top-4 duration-500">
-                <button 
-                  onClick={() => quickLogin('burger@nodo.mx')} 
-                  className="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-black hover:scale-105 transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] flex items-center justify-center gap-2"
-                >
-                  Continuar a la App 🚀
+              <div className="w-full mt-2 space-y-3 animate-in fade-in zoom-in slide-in-from-top-4 duration-500">
+                <p className="text-center text-emerald-400 font-bold text-sm mb-2">Wallet conectada ✅ Selecciona tu rol:</p>
+                <button onClick={() => quickLogin('demo@nodo.mx')} className="w-full py-3 rounded-xl bg-purple-500/20 border border-purple-500/30 text-purple-300 font-bold hover:bg-purple-500/40 transition-all flex items-center justify-center gap-2">
+                  🍔 Entrar como Cliente
+                </button>
+                <button onClick={() => quickLogin('burger@nodo.mx')} className="w-full py-3 rounded-xl bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 font-bold hover:bg-emerald-500/40 transition-all flex items-center justify-center gap-2">
+                  🏪 Entrar como Restaurante
+                </button>
+                <button onClick={() => quickLogin('courier@nodo.mx')} className="w-full py-3 rounded-xl bg-blue-500/20 border border-blue-500/30 text-blue-300 font-bold hover:bg-blue-500/40 transition-all flex items-center justify-center gap-2">
+                  🛵 Entrar como Repartidor
                 </button>
               </div>
             )}
