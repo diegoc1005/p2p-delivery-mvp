@@ -489,27 +489,43 @@ export default function CustomerApp() {
   return (
     <main className="min-h-screen bg-black flex items-center justify-center p-4 font-sans">
       <div className="w-full max-w-7xl min-h-screen md:min-h-[800px] bg-zinc-950 md:rounded-3xl border border-white/10 overflow-hidden flex flex-col relative">
-        <div className="px-6 pt-14 pb-4">
-          <div className="flex justify-between items-center mb-4 relative">
-            <div><p className="text-zinc-500 text-xs font-semibold uppercase tracking-wider">Entregar en</p><h2 className="text-white text-base font-bold flex items-center gap-1">Casa - Calle Principal 123 <svg className="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"/></svg></h2></div>
-            <div className="absolute left-1/2 -translate-x-1/2 font-black text-3xl tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-emerald-400">NODO</div>
-            <img src="/logo.jpg" alt="NODO" className="w-9 h-9 rounded-xl object-cover shadow-[0_0_10px_rgba(168,85,247,0.4)] relative z-10" />
-          </div>
-          <form onSubmit={handleAiSearch} className="relative mb-3">
-            <div className="absolute left-4 top-1/2 -translate-y-1/2">
-              {isAiSearching ? <svg className="w-4 h-4 text-purple-500 animate-spin" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8h8a8 8 0 11-16 0z"/></svg> : <span className="text-purple-500">✨</span>}
+        <header className="nav">
+          <div className="nav-inner">
+            <div className="brand">
+              <img src="/logo.jpg" alt="NODO" />
+              <b>NODO</b>
             </div>
-            <input type="text" placeholder="Pídele a Gemini (Ej. Tengo $15 y antojo de pizza)" value={aiQuery} onChange={e => setAiQuery(e.target.value)} disabled={isAiSearching} className="w-full bg-purple-500/10 border border-purple-500/30 rounded-2xl py-3 pl-11 pr-4 text-sm text-purple-100 focus:outline-none focus:border-purple-500 placeholder:text-purple-400/50" />
-          </form>
-          <div className="relative"><svg className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"/></svg><input type="text" placeholder="Buscar restaurantes..." value={search} onChange={e => setSearch(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-purple-500 placeholder:text-zinc-600" /></div>
-        </div>
-        <div className="px-6 py-4 flex gap-4 overflow-x-auto no-scrollbar border-b border-white/5">
+            <div className="addr">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="16" height="16"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              <div><small>Entregar en</small><span>Casa - Calle Principal 123</span></div>
+            </div>
+            <form onSubmit={handleAiSearch} className="search">
+              {isAiSearching ? (
+                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="animate-spin text-purple-500" width="17" height="17"><circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" className="opacity-25"/><path fill="currentColor" d="M4 12a8 8 0 018-8v8h8a8 8 0 11-16 0z" className="opacity-75"/></svg>
+              ) : (
+                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="17" height="17"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              )}
+              <input type="text" placeholder="Buscar restaurantes o pídele a Gemini..." value={aiQuery || search} onChange={e => { setAiQuery(e.target.value); setSearch(e.target.value); }} disabled={isAiSearching} />
+            </form>
+            <div className="nav-right">
+              <button className="iconbtn" aria-label="Carrito" onClick={() => setView('cart')}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" width="20" height="20"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+                {cartCount > 0 && <span className="count">{cartCount}</span>}
+              </button>
+              <button className="account" onClick={() => setTab('profile')}>
+                <span className="av">{user?.name?.charAt(0) || 'U'}</span>
+                <span>{user?.name || 'Perfil'}</span>
+              </button>
+            </div>
+          </div>
+        </header>
+        <div className="cats">
           {categories.map(cat => (
-            <button key={cat} onClick={() => setActiveCategory(cat)} className="flex flex-col items-center gap-2 group shrink-0">
-              <div className={`w-14 h-14 rounded-full flex items-center justify-center text-2xl transition-all shadow-lg ${activeCategory === cat ? 'bg-white text-black scale-110 shadow-white/20' : 'bg-white/5 text-white border border-white/10 group-hover:bg-white/10'}`}>
+            <button key={cat} onClick={() => setActiveCategory(cat)} className="cat" aria-pressed={activeCategory === cat}>
+              <span className="icon">
                 {cat === 'Todos' ? '🍴' : cat === 'Mexicana' ? '🌮' : cat === 'Hamburguesas' ? '🍔' : cat === 'Sushi' ? '🍣' : cat === 'Pizza' ? '🍕' : cat === 'Saludable' ? '🥗' : '🍽️'}
-              </div>
-              <span className={`text-[10px] font-bold uppercase tracking-wider transition-colors ${activeCategory === cat ? 'text-white' : 'text-zinc-500 group-hover:text-zinc-300'}`}>{cat}</span>
+              </span>
+              <span>{cat}</span>
             </button>
           ))}
         </div>
