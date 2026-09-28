@@ -515,25 +515,24 @@ export default function CustomerApp() {
         </div>
         <div className="flex-1 overflow-y-auto px-6 pb-24 no-scrollbar">
           <h3 className="text-white text-lg font-black tracking-tight mt-6 mb-4">Restaurantes cerca de tu ubicación</h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6" style={{ padding: '0 18px', gap: '20px 14px' }}>
             {filtered.map(r => (
-              <button key={r.id} onClick={() => openRestaurant(r)} className="w-full bg-white/[0.02] border border-white/5 rounded-2xl flex flex-col hover:scale-[1.02] transition-transform overflow-hidden text-left group">
-                <div className="w-full h-32 bg-gradient-to-br from-zinc-800 to-zinc-900 relative flex items-center justify-center text-6xl">
-                  {r.image}
-                  <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors"></div>
-                  {r.deliveryTime && (
-                    <div className="absolute bottom-2 right-2 bg-black/80 backdrop-blur-md px-2 py-1 rounded-lg text-[10px] font-bold text-white border border-white/10">
-                      {r.deliveryTime}
-                    </div>
-                  )}
-                </div>
-                <div className="p-4 w-full">
-                  <h4 className="text-white font-bold text-base truncate">{r.name}</h4>
-                  <div className="flex items-center gap-2 mt-1">
-                    <span className="text-xs text-yellow-500 font-bold bg-yellow-500/10 px-1.5 py-0.5 rounded">⭐ {r.rating}</span>
-                    <span className="text-xs text-zinc-500 truncate">{r.category} • {r.distanceKm}km</span>
-                  </div>
-                </div>
+              <button key={r.id} onClick={() => openRestaurant(r)} className="rcard">
+                <span className={`thumb${r.logo ? ' brand' : ''}`}>
+                  <div style={{fontSize: '4rem', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%', background: '#18181b'}}>{r.image}</div>
+                  <span className="cat-tag">{r.category}</span>
+                </span>
+                <span className="body">
+                  <span className="top">
+                    <span className="rcname">{r.name}</span>
+                    <span className="rating"><svg viewBox="0 0 24 24" fill="currentColor" width="16" height="16"><path d="m12 2 3 6.3 6.9.9-5 4.8 1.2 6.9L12 17.8 5.9 20.9 7.1 14l-5-4.8 6.9-.9L12 2z"/></svg>{r.rating.toFixed(1)}</span>
+                  </span>
+                  <span className="desc">{r.description || 'Sin descripción'}</span>
+                  <span className="meta">
+                    <span>{r.deliveryTime || '30-45 min'}</span><i></i><span>{r.distanceKm} km</span>
+                    <span className="fee" style={{marginLeft: 'auto'}}>Envío Inteligente</span>
+                  </span>
+                </span>
               </button>
             ))}
           </div>
