@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import Link from 'next/link';
-import { WalletButton } from '@pollar/react';
+import { WalletButton, usePollar } from '@pollar/react';
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -14,6 +14,9 @@ export default function AuthPage() {
   const [error, setError] = useState('');
   const [mounted, setMounted] = useState(false);
   const { login, register } = useAuth();
+  
+  // Safe extraction of usePollar to avoid errors if not fully loaded
+  const pollar = typeof usePollar === 'function' ? usePollar() : { isAuthenticated: false };
 
   useEffect(() => {
     setMounted(true);
@@ -59,8 +62,19 @@ export default function AuthPage() {
             {isLogin ? 'Acceso al Protocolo' : 'Unirse a NODO'}
           </h2>
 
-          <div className="flex justify-center mb-4 min-h-[48px]">
+          <div className="flex flex-col items-center justify-center mb-4 min-h-[48px] gap-4">
             {mounted && <WalletButton />}
+            
+            {mounted && pollar?.isAuthenticated && (
+              <div className="w-full mt-2 animate-in fade-in zoom-in slide-in-from-top-4 duration-500">
+                <button 
+                  onClick={() => quickLogin('burger@nodo.mx')} 
+                  className="w-full py-4 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-600 text-white font-black hover:scale-105 transition-all shadow-[0_0_20px_rgba(16,185,129,0.4)] flex items-center justify-center gap-2"
+                >
+                  Continuar a la App 🚀
+                </button>
+              </div>
+            )}
           </div>
           
           <div className="relative flex py-4 items-center">
