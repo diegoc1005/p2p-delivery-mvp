@@ -141,6 +141,13 @@ async function seed() {
         }
       }
     }),
+    prisma.restaurant.create({ data: { name: 'KFC (Simulado)', description: 'Pollo frito receta original', category: 'Hamburguesas', rating: 4.4, deliveryTime: '20-30 min', distanceKm: 5.1, image: '🍗', ownerId: (await prisma.user.create({ data: { email: 'mock_rest_1@nodo.mx', password: '123', role: 'RESTAURANT', name: 'KFC' }})).id } }),
+    prisma.restaurant.create({ data: { name: 'Starbucks (Simulado)', description: 'Café y bebidas frías', category: 'Café y Té', rating: 4.8, deliveryTime: '10-15 min', distanceKm: 1.2, image: '☕', ownerId: (await prisma.user.create({ data: { email: 'mock_rest_2@nodo.mx', password: '123', role: 'RESTAURANT', name: 'Starbucks' }})).id } }),
+    prisma.restaurant.create({ data: { name: 'Little Caesars (Simulado)', description: 'Pizza Hot-N-Ready', category: 'Pizza', rating: 4.3, deliveryTime: '15-20 min', distanceKm: 3.5, image: '🍕', ownerId: (await prisma.user.create({ data: { email: 'mock_rest_3@nodo.mx', password: '123', role: 'RESTAURANT', name: 'Little Caesars' }})).id } }),
+    prisma.restaurant.create({ data: { name: 'Subway (Simulado)', description: 'Subs frescos y saludables', category: 'Saludable', rating: 4.5, deliveryTime: '10-20 min', distanceKm: 2.1, image: '🥖', ownerId: (await prisma.user.create({ data: { email: 'mock_rest_4@nodo.mx', password: '123', role: 'RESTAURANT', name: 'Subway' }})).id } }),
+    prisma.restaurant.create({ data: { name: 'Dairy Queen (Simulado)', description: 'Helados y blizzards', category: 'Postres', rating: 4.7, deliveryTime: '15-25 min', distanceKm: 4.2, image: '🍦', ownerId: (await prisma.user.create({ data: { email: 'mock_rest_5@nodo.mx', password: '123', role: 'RESTAURANT', name: 'Dairy Queen' }})).id } }),
+    prisma.restaurant.create({ data: { name: 'Tacos El Paisa', description: 'Tacos de guisado y carnitas', category: 'Mexicana', rating: 4.6, deliveryTime: '10-20 min', distanceKm: 1.8, image: '🌮', ownerId: (await prisma.user.create({ data: { email: 'mock_rest_6@nodo.mx', password: '123', role: 'RESTAURANT', name: 'Tacos El Paisa' }})).id } }),
+    prisma.restaurant.create({ data: { name: 'Sushi Itto (Simulado)', description: 'Sushi tradicional', category: 'Sushi', rating: 4.5, deliveryTime: '30-40 min', distanceKm: 6.2, image: '🍣', ownerId: (await prisma.user.create({ data: { email: 'mock_rest_7@nodo.mx', password: '123', role: 'RESTAURANT', name: 'Sushi Itto' }})).id } }),
   ]);
 
   console.log(`✅ Created ${owners.length} restaurant owners`);

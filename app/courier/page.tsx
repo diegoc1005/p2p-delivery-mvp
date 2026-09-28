@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
 import confetti from 'canvas-confetti';
 import { RampWidget } from '@pollar/react';
-const API = `${process.env.NEXT_PUBLIC_API_URL || "https://nodo-5e4t.onrender.com"}`;
+const API = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV === "production" ? "https://nodo-5e4t.onrender.com" : "http://localhost:3001");
 
 export default function CourierDashboard() {
   const { user, isLoading, logout } = useAuth();

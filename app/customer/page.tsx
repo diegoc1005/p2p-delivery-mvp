@@ -11,7 +11,7 @@ type MenuItem = { id: string; name: string; description: string; price: number; 
 type CartItem = MenuItem & { quantity: number; restaurantId: string };
 type Order = { id: string; status: string; foodTotal: number; deliveryFee: number; deliverySecretCode?: string; smartContractTxHash?: string; createdAt: string; restaurant?: { name: string; image: string }; items?: { quantity: number; menuItem: MenuItem }[] };
 
-const API = `${process.env.NEXT_PUBLIC_API_URL || "https://nodo-5e4t.onrender.com"}`;
+const API = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV === "production" ? "https://nodo-5e4t.onrender.com" : "http://localhost:3001");
 
 export default function CustomerApp() {
   const { user, isLoading, logout } = useAuth();

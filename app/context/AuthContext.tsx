@@ -13,7 +13,7 @@ type AuthContextType = {
 };
 
 const AuthContext = createContext<AuthContextType | null>(null);
-const API = `${process.env.NEXT_PUBLIC_API_URL || "https://nodo-5e4t.onrender.com"}`;
+const API = process.env.NEXT_PUBLIC_API_URL || (process.env.NODE_ENV === "production" ? "https://nodo-5e4t.onrender.com" : "http://localhost:3001");
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
