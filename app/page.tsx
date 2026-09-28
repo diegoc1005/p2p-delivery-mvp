@@ -72,12 +72,19 @@ export default function LandingPage() {
       <section className="max-w-5xl mx-auto px-6 pb-24 md:pb-32 z-10 relative">
         <div className="aspect-video w-full bg-zinc-900/50 border border-white/10 rounded-[40px] overflow-hidden relative group">
           <div className="absolute inset-0 bg-gradient-to-tr from-purple-500/10 to-emerald-500/10"></div>
-          {/* Placeholder del Video */}
-          <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6">
-            <div className="w-20 h-20 bg-white/10 backdrop-blur-xl border border-white/20 rounded-full flex items-center justify-center mb-4 shadow-[0_0_50px_rgba(255,255,255,0.1)] group-hover:scale-110 transition-transform cursor-pointer">
-              <svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-            </div>
-            <p className="text-zinc-400 font-medium text-sm">Ver manifiesto NODO (01:24)</p>
+          {/* Video Real */}
+          <video 
+            autoPlay 
+            loop 
+            muted 
+            playsInline 
+            className="absolute inset-0 w-full h-full object-cover z-10"
+            src="/nodo-manifesto.mp4"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-20 pointer-events-none"></div>
+          <div className="absolute bottom-6 left-6 z-30">
+            <p className="text-white font-bold text-lg">Manifiesto NODO</p>
+            <p className="text-emerald-400 text-sm font-medium">Delivery descentralizado</p>
           </div>
         </div>
       </section>
