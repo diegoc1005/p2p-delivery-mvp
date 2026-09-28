@@ -1,5 +1,5 @@
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import Link from 'next/link';
 import { WalletButton } from '@pollar/react';
@@ -12,7 +12,12 @@ export default function AuthPage() {
   const [role, setRole] = useState('CUSTOMER');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [mounted, setMounted] = useState(false);
   const { login, register } = useAuth();
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,8 +59,8 @@ export default function AuthPage() {
             {isLogin ? 'Acceso al Protocolo' : 'Unirse a NODO'}
           </h2>
 
-          <div className="flex justify-center mb-4">
-            <WalletButton />
+          <div className="flex justify-center mb-4 min-h-[48px]">
+            {mounted && <WalletButton />}
           </div>
           
           <div className="relative flex py-4 items-center">

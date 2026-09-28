@@ -31,6 +31,7 @@ export const metadata: Metadata = {
   },
 };
 
+import '@pollar/react/styles.css';
 import { PollarProviderWrapper } from "./context/PollarProviderWrapper";
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
