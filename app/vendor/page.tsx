@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { io } from 'socket.io-client';
 
-const API = 'http://localhost:3001';
+const API = `${process.env.NEXT_PUBLIC_API_URL || "https://nodo-5e4t.onrender.com"}`;
 
 export default function VendorDashboard() {
   const { user, isLoading, logout } = useAuth();
