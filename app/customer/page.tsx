@@ -250,7 +250,7 @@ export default function CustomerApp() {
   // ===== TRACKING VIEW =====
   if (view === 'tracking' && activeOrder) return (
     <main className="min-h-screen bg-black flex items-center justify-center p-4 font-sans">
-      <div className="w-full max-w-[400px] h-[800px] bg-zinc-950 rounded-[40px] border border-white/10 overflow-hidden flex flex-col relative">
+      <div className="w-full max-w-7xl min-h-screen md:min-h-[800px] bg-zinc-950 md:rounded-3xl border border-white/10 overflow-hidden flex flex-col relative">
         <div className="h-40 bg-gradient-to-b from-emerald-900/30 to-transparent flex items-center justify-center relative">
           {activeOrder.status !== 'DELIVERED' && <div className="absolute inset-0 flex items-center justify-center"><div className="w-20 h-20 bg-emerald-500/20 rounded-full animate-ping"></div><div className="absolute w-3 h-3 bg-emerald-400 rounded-full"></div></div>}
           {activeOrder.status === 'DELIVERED' && <div className="text-6xl">🎉</div>}
@@ -318,7 +318,7 @@ export default function CustomerApp() {
   // ===== CART VIEW =====
   if (view === 'cart') return (
     <main className="min-h-screen bg-black flex items-center justify-center p-4 font-sans">
-      <div className="w-full max-w-[400px] h-[800px] bg-zinc-950 rounded-[40px] border border-white/10 overflow-hidden flex flex-col">
+      <div className="w-full max-w-7xl min-h-screen md:min-h-[800px] bg-zinc-950 md:rounded-3xl border border-white/10 overflow-hidden flex flex-col">
         <div className="px-6 pt-14 pb-4 flex items-center gap-4 border-b border-white/5">
           <button onClick={() => setView('restaurant')} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"/></svg></button>
           <h2 className="text-white text-xl font-bold">Tu Carrito</h2>
@@ -375,8 +375,8 @@ export default function CustomerApp() {
   // ===== RESTAURANT VIEW =====
   if (view === 'restaurant' && selectedRestaurant) return (
     <main className="min-h-screen bg-black flex items-center justify-center p-4 font-sans">
-      <div className="w-full max-w-[400px] h-[800px] bg-zinc-950 rounded-[40px] border border-white/10 overflow-hidden flex flex-col relative">
-        <div className="h-44 bg-gradient-to-br from-purple-900/40 to-black relative flex items-end px-6 pb-5">
+      <div className="w-full max-w-7xl min-h-screen md:min-h-[800px] bg-zinc-950 md:rounded-3xl border border-white/10 overflow-hidden flex flex-col relative">
+        <div className="h-64 bg-gradient-to-br from-purple-900/40 to-black relative flex items-end px-6 pb-5">
           <button onClick={() => setView('list')} className="absolute top-12 left-5 w-10 h-10 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center text-white z-10"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"/></svg></button>
           <div className="absolute top-8 right-6 text-6xl opacity-30">{selectedRestaurant.image}</div>
           <div><h2 className="text-white text-2xl font-bold tracking-tight">{selectedRestaurant.name}</h2>
@@ -391,12 +391,23 @@ export default function CustomerApp() {
           {menuCats.map(cat => (
             <div key={cat} className="mt-6">
               <h3 className="text-zinc-400 text-xs font-bold uppercase tracking-widest mb-3">{cat}</h3>
-              {menu.filter(m => m.category === cat).map(item => (
-                <div key={item.id} className="flex items-center justify-between py-4 border-b border-white/5 group">
-                  <div className="flex items-center gap-3 flex-1 min-w-0"><span className="text-3xl shrink-0">{item.image}</span><div className="min-w-0"><p className="text-white font-medium text-sm truncate">{item.name}</p><p className="text-zinc-600 text-xs truncate">{item.description}</p><p className="text-white font-bold text-sm mt-1">${item.price}</p></div></div>
-                  <button onClick={() => addToCart(item)} className="w-9 h-9 rounded-full bg-white/5 border border-white/10 text-white flex items-center justify-center hover:bg-emerald-500 hover:border-emerald-500 transition-all shrink-0 ml-3 text-lg">+</button>
-                </div>
-              ))}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {menu.filter(m => m.category === cat).map(item => (
+                  <div key={item.id} className="flex flex-col justify-between p-4 rounded-2xl bg-white/[0.02] border border-white/5 group hover:bg-white/[0.05] transition-colors">
+                    <div className="flex items-start gap-3 flex-1 min-w-0">
+                      <span className="text-4xl shrink-0">{item.image}</span>
+                      <div className="min-w-0">
+                        <p className="text-white font-medium text-sm truncate">{item.name}</p>
+                        <p className="text-zinc-500 text-xs line-clamp-2 mt-1">{item.description}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center justify-between mt-4">
+                      <p className="text-white font-bold text-sm">${item.price}</p>
+                      <button onClick={() => addToCart(item)} className="w-9 h-9 rounded-full bg-white/5 border border-white/10 text-white flex items-center justify-center hover:bg-emerald-500 hover:border-emerald-500 transition-all text-lg">+</button>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
         </div>
@@ -415,7 +426,7 @@ export default function CustomerApp() {
   // ===== ORDERS TAB =====
   if (tab === 'orders') return (
     <main className="min-h-screen bg-black flex items-center justify-center p-4 font-sans">
-      <div className="w-full max-w-[400px] h-[800px] bg-zinc-950 rounded-[40px] border border-white/10 overflow-hidden flex flex-col relative">
+      <div className="w-full max-w-7xl min-h-screen md:min-h-[800px] bg-zinc-950 md:rounded-3xl border border-white/10 overflow-hidden flex flex-col relative">
         <div className="px-6 pt-14 pb-4 border-b border-white/5"><h2 className="text-white text-2xl font-bold">Mis Órdenes</h2></div>
         <div className="flex-1 overflow-y-auto px-6 pb-24 no-scrollbar">
           {orders.length === 0 && <div className="flex flex-col items-center justify-center h-full text-zinc-600"><svg className="w-12 h-12 mb-3 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/></svg><p className="text-sm">Aún no tienes órdenes</p></div>}
@@ -436,7 +447,7 @@ export default function CustomerApp() {
   // ===== PROFILE TAB =====
   if (tab === 'profile') return (
     <main className="min-h-screen bg-black flex items-center justify-center p-4 font-sans">
-      <div className="w-full max-w-[400px] h-[800px] bg-zinc-950 rounded-[40px] border border-white/10 overflow-hidden flex flex-col relative">
+      <div className="w-full max-w-7xl min-h-screen md:min-h-[800px] bg-zinc-950 md:rounded-3xl border border-white/10 overflow-hidden flex flex-col relative">
         <div className="px-6 pt-14 pb-4 border-b border-white/5"><h2 className="text-white text-2xl font-bold">Mi Perfil</h2></div>
         <div className="flex-1 px-6 pt-6 pb-24 no-scrollbar">
           <div className="flex items-center gap-4 mb-8">
@@ -477,7 +488,7 @@ export default function CustomerApp() {
   // ===== HOME TAB =====
   return (
     <main className="min-h-screen bg-black flex items-center justify-center p-4 font-sans">
-      <div className="w-full max-w-[400px] h-[800px] bg-zinc-950 rounded-[40px] border border-white/10 overflow-hidden flex flex-col relative">
+      <div className="w-full max-w-7xl min-h-screen md:min-h-[800px] bg-zinc-950 md:rounded-3xl border border-white/10 overflow-hidden flex flex-col relative">
         <div className="px-6 pt-14 pb-4">
           <div className="flex justify-between items-center mb-4">
             <div><p className="text-zinc-500 text-xs font-semibold uppercase tracking-wider">Entregar en</p><h2 className="text-white text-base font-bold flex items-center gap-1">Casa - Calle Principal 123 <svg className="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"/></svg></h2></div>
@@ -496,7 +507,7 @@ export default function CustomerApp() {
         </div>
         <div className="flex-1 overflow-y-auto px-6 pb-24 no-scrollbar">
           <h3 className="text-zinc-400 text-xs font-bold uppercase tracking-widest mt-4 mb-4">{filtered.length} restaurantes</h3>
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filtered.map(r => (
               <button key={r.id} onClick={() => openRestaurant(r)} className="w-full bg-white/[0.02] border border-white/5 rounded-2xl p-4 flex items-center gap-4 hover:bg-white/[0.05] transition-all active:scale-[0.98] text-left group">
                 <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center text-4xl group-hover:scale-110 transition-transform">{r.image}</div>
