@@ -229,7 +229,7 @@ export default function CustomerApp() {
   const statusLabels: Record<string, string> = { ESCROW_LOCKED: "Pago en Escrow ✓", PREPARING: "Restaurante preparando", IN_TRANSIT: "Repartidor en camino", DELIVERED: "Entregado" };
   const currentStatusIdx = activeOrder ? statusSteps.indexOf(activeOrder.status) : 0;
 
-  if (isLoading || !user) return <main className="min-h-screen bg-black flex items-center justify-center"><div className="w-6 h-6 border-2 border-white/20 border-t-white rounded-full animate-spin"></div></main>;
+  if (isLoading || !user) return <main className="od-theme min-h-screen bg-black flex items-center justify-center"><div className="w-6 h-6 border-2 border-white/20 border-t-white rounded-full animate-spin"></div></main>;
 
   // ===== BOTTOM NAV COMPONENT =====
   const BottomNav = () => (
@@ -249,7 +249,7 @@ export default function CustomerApp() {
 
   // ===== TRACKING VIEW =====
   if (view === 'tracking' && activeOrder) return (
-    <main className="min-h-screen bg-black flex items-center justify-center p-4 font-sans">
+    <main className="od-theme min-h-screen bg-black flex items-center justify-center p-4 font-sans">
       <div className="w-full max-w-7xl min-h-screen md:min-h-[800px] bg-zinc-950 md:rounded-3xl border border-white/10 overflow-hidden flex flex-col relative">
         <div className="h-40 bg-gradient-to-b from-emerald-900/30 to-transparent flex items-center justify-center relative">
           {activeOrder.status !== 'DELIVERED' && <div className="absolute inset-0 flex items-center justify-center"><div className="w-20 h-20 bg-emerald-500/20 rounded-full animate-ping"></div><div className="absolute w-3 h-3 bg-emerald-400 rounded-full"></div></div>}
@@ -317,7 +317,7 @@ export default function CustomerApp() {
 
   // ===== CART VIEW =====
   if (view === 'cart') return (
-    <main className="min-h-screen bg-black flex items-center justify-center p-4 font-sans">
+    <main className="od-theme min-h-screen bg-black flex items-center justify-center p-4 font-sans">
       <div className="w-full max-w-7xl min-h-screen md:min-h-[800px] bg-zinc-950 md:rounded-3xl border border-white/10 overflow-hidden flex flex-col">
         <div className="px-6 pt-14 pb-4 flex items-center gap-4 border-b border-white/5">
           <button onClick={() => setView('restaurant')} className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"/></svg></button>
@@ -374,7 +374,7 @@ export default function CustomerApp() {
 
   // ===== RESTAURANT VIEW =====
   if (view === 'restaurant' && selectedRestaurant) return (
-    <main className="min-h-screen bg-black flex items-center justify-center p-4 font-sans">
+    <main className="od-theme min-h-screen bg-black flex items-center justify-center p-4 font-sans">
       <div className="w-full max-w-7xl min-h-screen md:min-h-[800px] bg-zinc-950 md:rounded-3xl border border-white/10 overflow-hidden flex flex-col relative">
         <div className="h-64 bg-gradient-to-br from-purple-900/40 to-black relative flex items-end px-6 pb-5">
           <button onClick={() => setView('list')} className="absolute top-12 left-5 w-10 h-10 rounded-full bg-black/60 backdrop-blur-md flex items-center justify-center text-white z-10"><svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7"/></svg></button>
@@ -425,7 +425,7 @@ export default function CustomerApp() {
 
   // ===== ORDERS TAB =====
   if (tab === 'orders') return (
-    <main className="min-h-screen bg-black flex items-center justify-center p-4 font-sans">
+    <main className="od-theme min-h-screen bg-black flex items-center justify-center p-4 font-sans">
       <div className="w-full max-w-7xl min-h-screen md:min-h-[800px] bg-zinc-950 md:rounded-3xl border border-white/10 overflow-hidden flex flex-col relative">
         <div className="px-6 pt-14 pb-4 border-b border-white/5"><h2 className="text-white text-2xl font-bold">Mis Órdenes</h2></div>
         <div className="flex-1 overflow-y-auto px-6 pb-24 no-scrollbar">
@@ -446,7 +446,7 @@ export default function CustomerApp() {
 
   // ===== PROFILE TAB =====
   if (tab === 'profile') return (
-    <main className="min-h-screen bg-black flex items-center justify-center p-4 font-sans">
+    <main className="od-theme min-h-screen bg-black flex items-center justify-center p-4 font-sans">
       <div className="w-full max-w-7xl min-h-screen md:min-h-[800px] bg-zinc-950 md:rounded-3xl border border-white/10 overflow-hidden flex flex-col relative">
         <div className="px-6 pt-14 pb-4 border-b border-white/5"><h2 className="text-white text-2xl font-bold">Mi Perfil</h2></div>
         <div className="flex-1 px-6 pt-6 pb-24 no-scrollbar">
@@ -487,7 +487,7 @@ export default function CustomerApp() {
 
   // ===== HOME TAB =====
   return (
-    <main className="min-h-screen bg-black flex items-center justify-center p-4 font-sans">
+    <main className="od-theme min-h-screen bg-black flex items-center justify-center p-4 font-sans">
       <div className="w-full max-w-7xl min-h-screen md:min-h-[800px] bg-zinc-950 md:rounded-3xl border border-white/10 overflow-hidden flex flex-col relative">
         <header className="nav">
           <div className="nav-inner">

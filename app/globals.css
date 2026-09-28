@@ -32,9 +32,12 @@ h1, h2, h3 { letter-spacing: -0.04em; }
 .animate-in { animation: slide-in-bottom 0.4s ease-out forwards; }
 .fade-in { animation-name: slide-in-bottom; }
 
-/* --- OPEN DESIGN CSS --- */
 
-  :root{
+/* --- OPEN DESIGN CSS --- */
+.od-theme {
+
+
+  .od-theme {
     --bg:#000000;
     --surface:#09090b;
     --surface-2:rgba(255,255,255,.03);
@@ -463,3 +466,5 @@ h1, h2, h3 { letter-spacing: -0.04em; }
   @media (prefers-reduced-motion:reduce){
     *{animation-duration:.001ms!important;transition-duration:.001ms!important}
   }
+
+}
