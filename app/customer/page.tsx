@@ -490,9 +490,10 @@ export default function CustomerApp() {
     <main className="min-h-screen bg-black flex items-center justify-center p-4 font-sans">
       <div className="w-full max-w-7xl min-h-screen md:min-h-[800px] bg-zinc-950 md:rounded-3xl border border-white/10 overflow-hidden flex flex-col relative">
         <div className="px-6 pt-14 pb-4">
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex justify-between items-center mb-4 relative">
             <div><p className="text-zinc-500 text-xs font-semibold uppercase tracking-wider">Entregar en</p><h2 className="text-white text-base font-bold flex items-center gap-1">Casa - Calle Principal 123 <svg className="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"/></svg></h2></div>
-            <img src="/logo.jpg" alt="NODO" className="w-9 h-9 rounded-full object-cover shadow-[0_0_10px_rgba(168,85,247,0.4)]" />
+            <div className="absolute left-1/2 -translate-x-1/2 font-black text-2xl tracking-tighter text-white">NODO</div>
+            <img src="/logo.jpg" alt="NODO" className="w-9 h-9 rounded-full object-cover shadow-[0_0_10px_rgba(168,85,247,0.4)] relative z-10" />
           </div>
           <form onSubmit={handleAiSearch} className="relative mb-3">
             <div className="absolute left-4 top-1/2 -translate-y-1/2">
