@@ -1,0 +1,41 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/goo/GoyaHack/p2p-delivery-mvp/contracts/contracts/P2PDeliveryEscrow.sol": {
+      "lastModificationDate": 1790365894332,
+      "contentHash": "145380628e8d22820d5635f16322e3de",
+      "sourceName": "contracts/P2PDeliveryEscrow.sol",
+      "solcConfig": {
+        "version": "0.8.20",
+        "settings": {
+          "evmVersion": "paris",
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.20"
+      ],
+      "artifacts": [
+        "P2PDeliveryEscrow"
+      ]
+    }
+  }
+}

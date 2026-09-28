@@ -1,36 +1,156 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<p align="center">
+  <img src="public/logo.jpg" width="80" alt="NODO Logo" style="border-radius: 16px" />
+</p>
 
-## Getting Started
+<h1 align="center">NODO Protocol</h1>
+<p align="center">
+  <strong>Delivery Descentralizado · Cero Comisiones · Impulsado por IA</strong>
+</p>
+<p align="center">
+  <a href="#arquitectura">Arquitectura</a> · <a href="#tech-stack">Stack</a> · <a href="#cómo-correrlo">Cómo Correrlo</a> · <a href="#flujo-demo">Demo</a>
+</p>
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## ¿Qué es NODO?
+
+NODO es un **protocolo P2P de logística** que elimina a los intermediarios extractivos como Rappi o UberEats. En lugar de cobrar un 30% de comisión a los restaurantes, NODO usa:
+
+- 🤖 **Agentes de IA (Gemini)** para calcular tarifas de envío justas e imparciales basadas en tráfico, clima y distancia.
+- ⛓️ **Smart Contracts (Escrow)** para bloquear los fondos del cliente y liberarlos automáticamente al restaurante y repartidor solo al confirmar la entrega.
+- 🔐 **Verificación Anti-Fraude** con un PIN criptográfico de 6 dígitos que el cliente debe entregar al repartidor para desbloquear el pago on-chain.
+
+**Resultado**: Restaurantes ganan 100%. Repartidores ganan 100% de la tarifa. Comisión NODO: **0%**.
+
+---
+
+## Arquitectura
+
+```
+┌──────────────────────────────────────────────────────┐
+│                     FRONTEND (Next.js 16)            │
+│  ┌─────────┐  ┌──────────┐  ┌─────────┐  ┌───────┐  │
+│  │ Landing  │  │ Customer │  │ Vendor  │  │Courier│  │
+│  │  Page    │  │   App    │  │Dashboard│  │  App  │  │
+│  └─────────┘  └────┬─────┘  └────┬────┘  └───┬───┘  │
+└─────────────────────┼────────────┼────────────┼──────┘
+                      │ REST API   │ WebSocket  │ REST
+                      ▼            ▼            ▼
+┌──────────────────────────────────────────────────────┐
+│               BACKEND (Express + Socket.io)          │
+│  ┌──────────┐  ┌───────────┐  ┌──────────────────┐   │
+│  │ Auth     │  │ Order     │  │ AI Negotiation   │   │
+│  │ JWT+bcrypt│ │ Lifecycle │  │ (Gemini 3.8)     │   │
+│  └──────────┘  └─────┬─────┘  └──────────────────┘   │
+│                      │                                │
+│            ┌─────────▼─────────┐                      │
+│            │   Prisma ORM      │                      │
+│            │   (SQLite DB)     │                      │
+│            └───────────────────┘                      │
+└──────────────────────────────────────────────────────┘
+                      │
+                      ▼
+┌──────────────────────────────────────────────────────┐
+│             SMART CONTRACT (Solidity)                │
+│  ┌──────────────────────────────────────────────┐    │
+│  │  P2PDeliveryEscrow.sol                       │    │
+│  │  deposit() → lockFunds → releaseFunds()      │    │
+│  │  Anti-fraud PIN verification on delivery      │    │
+│  └──────────────────────────────────────────────┘    │
+└──────────────────────────────────────────────────────┘
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Tech Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Capa | Tecnología |
+|------|-----------|
+| Frontend | Next.js 16, TypeScript, Tailwind CSS |
+| Backend | Express.js, Socket.io, Prisma ORM |
+| Base de Datos | SQLite (dev) / PostgreSQL (prod) |
+| IA | Google Gemini 3.8 Flash (Agente Logístico) |
+| Auth | JWT + bcrypt |
+| Smart Contract | Solidity 0.8.20, Hardhat |
+| Real-time | WebSockets (Socket.io) |
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Cómo Correrlo
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Prerrequisitos
+- Node.js 18+
+- npm
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### 1. Clonar e instalar
 
-## Deploy on Vercel
+```bash
+git clone https://github.com/diegoc1005/p2p-delivery-mvp.git
+cd p2p-delivery-mvp
+npm install
+cd backend && npm install && cd ..
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### 2. Configurar variables de entorno
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+# backend/.env
+GEMINI_API_KEY=tu-api-key-de-gemini
+JWT_SECRET=nodo_secret_hackathon_2026
+```
+
+### 3. Inicializar base de datos
+
+```bash
+cd backend
+npx prisma db push
+npx ts-node prisma/seed.ts
+```
+
+### 4. Correr ambos servidores
+
+```bash
+# Terminal 1: Backend
+cd backend && npm run dev
+
+# Terminal 2: Frontend
+npm run dev
+```
+
+- Frontend: `http://localhost:3000`
+- Backend: `http://localhost:3001`
+
+---
+
+## Flujo Demo
+
+### Credenciales de prueba
+
+| Rol | Email | Password |
+|-----|-------|----------|
+| 🍔 Cliente | demo@nodo.mx | 123456 |
+| 🏪 Restaurante | burger@nodo.mx | 123456 |
+| 🛵 Courier | courier@nodo.mx | 123456 |
+
+### El "Camino Feliz"
+
+1. **Abre 3 pestañas** en tu navegador
+2. **Pestaña 1** → `/auth` → Login como Cliente (demo@nodo.mx)
+3. **Pestaña 2** → `/auth` → Login como Restaurante (burger@nodo.mx)
+4. **Pestaña 3** → `/auth` → Login como Courier (courier@nodo.mx)
+5. **Como Cliente**: Elige un restaurante → Agrega items → Carrito → "Cotizar con IA" → "Confirmar y Pagar"
+6. **Como Restaurante**: Verás la orden aparecer en tiempo real → Click "Aceptar y Preparar"
+7. **Como Courier**: El viaje aparece → "Aceptar Viaje" → Ingresa el PIN del cliente → "Verificar y Cobrar"
+8. **Como Cliente**: Tu tracking se actualiza en vivo mostrando cada paso 🎉
+
+---
+
+## Equipo
+
+Proyecto creado para **GOYA Hack 2026** 🚀
+
+---
+
+<p align="center">
+  <em>NODO Protocol — El delivery del futuro no necesita intermediarios.</em>
+</p>
