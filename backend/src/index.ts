@@ -6,7 +6,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import { negotiateDeliveryFee } from './ai';
+import { negotiateDeliveryFee, searchRestaurantsAI } from './ai';
 
 dotenv.config();
 
@@ -90,6 +90,22 @@ app.post('/api/orders/negotiate', async (req, res) => {
     const { distanceKm, weather, traffic } = req.body;
     const feeData = await negotiateDeliveryFee(distanceKm || 3.5, weather || "soleado", traffic || "moderado");
     res.json(feeData);
+  } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// --- AI SEARCH ---
+app.post('/api/ai/search', async (req, res) => {
+  try {
+    const { query } = req.body;
+    if (!query) return res.status(400).json({ error: 'Query required' });
+    const restaurants = await prisma.restaurant.findMany({ include: { menuItems: true } });
+    const recommendedId = await searchRestaurantsAI(query, restaurants);
+    if (recommendedId === 'NULL') {
+      return res.json({ restaurantId: null });
+    }
+    res.json({ restaurantId: recommendedId });
   } catch (error: any) {
     res.status(500).json({ error: error.message });
   }

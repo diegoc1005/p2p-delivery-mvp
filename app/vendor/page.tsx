@@ -51,7 +51,22 @@ export default function VendorDashboard() {
   if (isLoading || !user) return null;
 
   const todaySales = orders.reduce((acc, o) => acc + o.foodTotal, 0);
-  const savedFromRappi = todaySales * 0.3;
+  const savedFromRappi = todaySales * 0.3; // 30% comission saved
+  
+  // Advanced Metrics
+  const productCount: Record<string, number> = {};
+  const customerCount: Record<string, number> = {};
+  
+  orders.forEach(o => {
+    customerCount[o.customerId] = (customerCount[o.customerId] || 0) + 1;
+    o.items?.forEach((i: any) => {
+      const name = i.menuItem?.name || 'Producto';
+      productCount[name] = (productCount[name] || 0) + i.quantity;
+    });
+  });
+
+  const topProducts = Object.entries(productCount).sort((a, b) => b[1] - a[1]).slice(0, 3);
+  const topCustomerStr = Object.entries(customerCount).sort((a, b) => b[1] - a[1])[0]?.[0]?.substring(0, 5) || "N/A";
 
   return (
     <main className="min-h-screen bg-[#050505] text-white p-6 md:p-10 font-sans">
@@ -140,6 +155,30 @@ export default function VendorDashboard() {
                 <div><p className="text-zinc-500 text-sm mb-1">Ventas</p><p className="font-black text-3xl text-white">${todaySales.toFixed(2)}</p></div>
                 <div><p className="text-zinc-500 text-sm mb-1">Comisiones NODO</p><p className="font-black text-3xl text-emerald-400">$0.00</p></div>
                 <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4"><p className="text-emerald-400 text-sm font-bold">💰 Ahorro vs Rappi</p><p className="text-2xl font-black text-emerald-400 mt-1">${savedFromRappi.toFixed(2)}</p></div>
+              </div>
+            </div>
+
+            <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-6">
+              <h3 className="font-semibold text-lg mb-4 text-white">Análisis de Datos IA 🤖</h3>
+              
+              <div className="space-y-4">
+                <div>
+                  <p className="text-zinc-500 text-xs uppercase tracking-wider mb-2">Más Vendidos</p>
+                  {topProducts.length === 0 ? <p className="text-zinc-600 text-sm">Sin datos</p> : topProducts.map(([name, qty]) => (
+                    <div key={name} className="flex justify-between items-center text-sm py-1 border-b border-white/5">
+                      <span className="text-zinc-300 truncate pr-2">{name}</span>
+                      <span className="font-bold text-white bg-white/10 px-2 rounded-md">{qty}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-4 pt-4 border-t border-white/5">
+                  <p className="text-zinc-500 text-xs uppercase tracking-wider mb-2">Mejor Cliente Hoy</p>
+                  <div className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-full bg-purple-500/20 flex items-center justify-center text-purple-400">👤</div>
+                    <p className="text-white text-sm font-mono">Usuario_{topCustomerStr}</p>
+                  </div>
+                </div>
               </div>
             </div>
             <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-6">

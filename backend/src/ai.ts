@@ -57,3 +57,29 @@ export async function negotiateDeliveryFee(distanceKm: number, weather: string, 
         };
     }
 }
+
+export async function searchRestaurantsAI(query: string, restaurants: any[]): Promise<string> {
+    const contextStr = JSON.stringify(restaurants.map(r => ({
+        id: r.id, name: r.name, category: r.category, description: r.description,
+        menuItems: r.menuItems.map((m:any) => ({ name: m.name, price: m.price, description: m.description }))
+    })));
+
+    const prompt = `
+    Eres el Agente IA de recomendaciones de comida para la app NODO.
+    El usuario dice: "${query}"
+    
+    Aquí está la lista de restaurantes disponibles con sus menús:
+    ${contextStr}
+    
+    Analiza la petición del usuario y encuentra el restaurante que MEJOR se adapte. 
+    Responde ÚNICAMENTE con el ID del restaurante en formato texto plano (nada más). Si ninguno se adapta bien, responde "NULL".
+    `;
+
+    try {
+        const response = await ai.models.generateContent({ model: 'gemini-3.8-flash', contents: prompt });
+        return response.text?.trim().replace(/['"]/g, '') || "NULL";
+    } catch (e) {
+        console.error("AI Search Error:", e);
+        return "NULL";
+    }
+}

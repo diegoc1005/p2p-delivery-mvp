@@ -35,6 +35,10 @@ export default function CustomerApp() {
   // Search & filter
   const [search, setSearch] = useState("");
   const [activeCategory, setActiveCategory] = useState("Todos");
+  
+  // AI Search
+  const [aiQuery, setAiQuery] = useState("");
+  const [isAiSearching, setIsAiSearching] = useState(false);
 
   // Toast
   const [toast, setToast] = useState("");
@@ -66,10 +70,18 @@ export default function CustomerApp() {
     s.on('order_update', (data: any) => {
       setActiveOrder(prev => prev && prev.id === data.id ? { ...prev, status: data.status } : prev);
       setOrders(prev => prev.map(o => o.id === data.id ? { ...o, status: data.status } : o));
-      if (data.status === 'IN_TRANSIT') showToast('🛵 ¡Tu repartidor va en camino!');
+      
+      let msg = "";
+      if (data.status === 'PREPARING') msg = '👨‍🍳 ¡Tu restaurante empezó a preparar tu pedido!';
+      if (data.status === 'IN_TRANSIT') msg = '🛵 ¡Tu repartidor va en camino!';
       if (data.status === 'DELIVERED') {
-        showToast('🎉 ¡Pedido entregado! Fondos liberados del Escrow');
+        msg = '🎉 ¡Pedido entregado! Fondos liberados del Escrow';
         confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+      }
+      
+      if (msg) {
+        showToast(msg);
+        if (Notification.permission === "granted") new Notification("Actualización NODO", { body: msg });
       }
     });
     setSocket(s);
@@ -136,6 +148,35 @@ export default function CustomerApp() {
       showToast('⚡ Tarifa de contingencia aplicada');
     }
     setIsNegotiating(false);
+  };
+
+  const handleAiSearch = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!aiQuery.trim()) return;
+    setIsAiSearching(true);
+    try {
+      const res = await fetch(`${API}/api/ai/search`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: aiQuery })
+      });
+      const data = await res.json();
+      if (data.restaurantId) {
+        const found = restaurants.find(r => r.id === data.restaurantId);
+        if (found) {
+          openRestaurant(found);
+          showToast("¡La IA encontró la mejor opción para ti! ✨");
+        } else {
+          showToast("La IA no encontró una coincidencia exacta.");
+        }
+      } else {
+        showToast("La IA no encontró sugerencias.");
+      }
+    } catch (e) {
+      console.error(e);
+      showToast("Error al consultar a Gemini");
+    }
+    setIsAiSearching(false);
+    setAiQuery("");
   };
 
   const placeOrder = async () => {
@@ -227,7 +268,9 @@ export default function CustomerApp() {
                   <div className="w-8 h-8 rounded-full bg-blue-500/20 flex items-center justify-center text-blue-400">🔗</div>
                   <div className="flex-1 overflow-hidden">
                     <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-wider mb-0.5">Soroban Tx Hash</p>
-                    <p className="text-white text-xs font-mono truncate">{activeOrder.smartContractTxHash}</p>
+                    <a href={`https://stellar.expert/explorer/testnet/tx/${activeOrder.smartContractTxHash}`} target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300 text-xs font-mono truncate block underline decoration-purple-500/50">
+                      {activeOrder.smartContractTxHash}
+                    </a>
                   </div>
                 </div>
               )}
@@ -422,6 +465,12 @@ export default function CustomerApp() {
             <div><p className="text-zinc-500 text-xs font-semibold uppercase tracking-wider">Entregar en</p><h2 className="text-white text-base font-bold flex items-center gap-1">Casa - Calle Principal 123 <svg className="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7"/></svg></h2></div>
             <img src="/logo.jpg" alt="NODO" className="w-9 h-9 rounded-full object-cover shadow-[0_0_10px_rgba(168,85,247,0.4)]" />
           </div>
+          <form onSubmit={handleAiSearch} className="relative mb-3">
+            <div className="absolute left-4 top-1/2 -translate-y-1/2">
+              {isAiSearching ? <svg className="w-4 h-4 text-purple-500 animate-spin" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8h8a8 8 0 11-16 0z"/></svg> : <span className="text-purple-500">✨</span>}
+            </div>
+            <input type="text" placeholder="Pídele a Gemini (Ej. Tengo $15 y antojo de pizza)" value={aiQuery} onChange={e => setAiQuery(e.target.value)} disabled={isAiSearching} className="w-full bg-purple-500/10 border border-purple-500/30 rounded-2xl py-3 pl-11 pr-4 text-sm text-purple-100 focus:outline-none focus:border-purple-500 placeholder:text-purple-400/50" />
+          </form>
           <div className="relative"><svg className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" viewBox="0 0 20 20" fill="currentColor"><path fillRule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clipRule="evenodd"/></svg><input type="text" placeholder="Buscar restaurantes..." value={search} onChange={e => setSearch(e.target.value)} className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-11 pr-4 text-sm text-white focus:outline-none focus:border-purple-500 placeholder:text-zinc-600" /></div>
         </div>
         <div className="px-6 py-2 flex gap-2 overflow-x-auto no-scrollbar">

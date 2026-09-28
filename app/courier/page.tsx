@@ -330,7 +330,7 @@ export default function CourierDashboard() {
                             <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
                             Soroban Smart Contract
                           </p>
-                          <a href="#" className="text-purple-400 text-xs font-mono break-all hover:underline">
+                          <a href={`https://stellar.expert/explorer/testnet/tx/${selectedHistoryOrder.smartContractTxHash}`} target="_blank" rel="noopener noreferrer" className="text-purple-400 text-xs font-mono break-all hover:underline">
                             {selectedHistoryOrder.smartContractTxHash}
                           </a>
                         </div>
