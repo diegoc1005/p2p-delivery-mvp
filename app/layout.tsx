@@ -31,6 +31,8 @@ export const metadata: Metadata = {
   },
 };
 
+import { PollarProviderWrapper } from "./context/PollarProviderWrapper";
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
@@ -38,7 +40,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <AuthProvider>{children}</AuthProvider>
+        <PollarProviderWrapper>
+          <AuthProvider>{children}</AuthProvider>
+        </PollarProviderWrapper>
       </body>
     </html>
   );

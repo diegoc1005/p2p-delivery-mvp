@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
 import { io } from 'socket.io-client';
-
+import { RampWidget } from '@pollar/react';
 const API = `${process.env.NEXT_PUBLIC_API_URL || "https://nodo-5e4t.onrender.com"}`;
 
 export default function VendorDashboard() {
@@ -11,6 +11,7 @@ export default function VendorDashboard() {
   const router = useRouter();
   const [orders, setOrders] = useState<any[]>([]);
   const [status, setStatus] = useState("Conectando...");
+  const [showPollarRamp, setShowPollarRamp] = useState(false);
 
   useEffect(() => {
     if (!isLoading) {
@@ -156,6 +157,12 @@ export default function VendorDashboard() {
                 <div><p className="text-zinc-500 text-sm mb-1">Comisiones NODO</p><p className="font-black text-3xl text-emerald-400">$0.00</p></div>
                 <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-4"><p className="text-emerald-400 text-sm font-bold">💰 Ahorro vs Rappi</p><p className="text-2xl font-black text-emerald-400 mt-1">${savedFromRappi.toFixed(2)}</p></div>
               </div>
+              <button 
+                onClick={() => setShowPollarRamp(true)}
+                className="w-full mt-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-sm shadow-[0_0_15px_rgba(59,130,246,0.5)] hover:from-blue-500 hover:to-indigo-500 transition-all flex items-center justify-center gap-2"
+              >
+                <span>🐻‍❄️</span> Retirar a Banco Local (vía Pollar)
+              </button>
             </div>
 
             <div className="bg-white/[0.02] border border-white/5 rounded-3xl p-6">
@@ -188,6 +195,14 @@ export default function VendorDashboard() {
           </div>
         </div>
       </div>
+      
+      {showPollarRamp && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4">
+          <div className="w-full max-w-md bg-white rounded-3xl overflow-hidden relative shadow-2xl">
+            <RampWidget onClose={() => setShowPollarRamp(false)} />
+          </div>
+        </div>
+      )}
     </main>
   );
 }

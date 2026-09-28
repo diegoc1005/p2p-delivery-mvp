@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useRouter } from 'next/navigation';
 import confetti from 'canvas-confetti';
-
+import { RampWidget } from '@pollar/react';
 const API = `${process.env.NEXT_PUBLIC_API_URL || "https://nodo-5e4t.onrender.com"}`;
 
 export default function CourierDashboard() {
@@ -19,6 +19,7 @@ export default function CourierDashboard() {
   const [tab, setTab] = useState<'home' | 'history' | 'profile'>('home');
   const [historyOrders, setHistoryOrders] = useState<any[]>([]);
   const [selectedHistoryOrder, setSelectedHistoryOrder] = useState<any>(null);
+  const [showPollarRamp, setShowPollarRamp] = useState(false);
 
   useEffect(() => {
     if (!isLoading) {
@@ -282,6 +283,12 @@ export default function CourierDashboard() {
                 <p className="text-emerald-400 font-bold text-sm mb-1">Total Generado (100% tuyo)</p>
                 <p className="text-white font-black text-4xl">${totalEarnings.toFixed(2)}</p>
               </div>
+              <button 
+                onClick={() => setShowPollarRamp(true)}
+                className="w-full mb-6 py-3 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-sm shadow-[0_0_15px_rgba(59,130,246,0.5)] hover:from-blue-500 hover:to-indigo-500 transition-all flex items-center justify-center gap-2"
+              >
+                <span>🐻‍❄️</span> Retirar a Banco Local (vía Pollar)
+              </button>
               
               <h3 className="text-white font-bold text-lg mb-4">Historial de Viajes</h3>
               {historyOrders.length === 0 ? (
@@ -376,6 +383,14 @@ export default function CourierDashboard() {
 
         {/* Render Bottom Nav only if not actively delivering */}
         {phase !== 'delivering' && phase !== 'done' && <BottomNav />}
+        
+        {showPollarRamp && (
+          <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4 rounded-[40px]">
+            <div className="w-full max-w-sm bg-white rounded-3xl overflow-hidden relative shadow-2xl">
+              <RampWidget onClose={() => setShowPollarRamp(false)} />
+            </div>
+          </div>
+        )}
         
       </div>
     </main>
