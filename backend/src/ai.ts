@@ -37,7 +37,7 @@ export async function negotiateDeliveryFee(distanceKm: number, weather: string, 
 
     try {
         const response = await ai.models.generateContent({
-            model: 'gemini-1.5-flash',
+            model: 'gemini-3.5-flash',
             contents: prompt,
         });
         
@@ -76,7 +76,9 @@ export async function searchRestaurantsAI(query: string, restaurants: any[]): Pr
     `;
 
     try {
-        const response = await ai.models.generateContent({ model: 'gemini-1.5-flash', contents: prompt });
+        console.log("AI Prompt query:", query);
+        const response = await ai.models.generateContent({ model: 'gemini-3.5-flash', contents: prompt });
+        console.log("AI Response text:", response.text);
         return response.text?.trim().replace(/['"]/g, '') || "NULL";
     } catch (e) {
         console.error("AI Search Error:", e);
