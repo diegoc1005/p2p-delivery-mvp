@@ -47,14 +47,23 @@ export default function LandingPage() {
           Hackathon GOYA HACK 2026
         </div>
         
-        <h1 className="text-5xl sm:text-6xl md:text-[8rem] font-medium tracking-tighter leading-[0.9] mb-8 animate-in slide-in-from-bottom-8 fade-in duration-1000 delay-150">
-          Delivery, <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40">
-            descentralizado.
-          </span>
-        </h1>
+        <div className="relative inline-block">
+          {/* N Background image */}
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 md:w-96 md:h-96 opacity-20 pointer-events-none mix-blend-screen blur-sm">
+            <img src="/logo-n.jpg" alt="N Background" className="w-full h-full object-contain" />
+          </div>
+          
+          <h1 className="relative text-4xl sm:text-5xl md:text-7xl font-bold tracking-tighter leading-[1.1] mb-8 animate-in slide-in-from-bottom-8 fade-in duration-1000 delay-150 z-10">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-emerald-400">NODO</span>
+            <br />
+            Delivery, <br />
+            <span className="text-transparent bg-clip-text bg-gradient-to-b from-white to-white/40">
+              descentralizado.
+            </span>
+          </h1>
+        </div>
         
-        <p className="text-base sm:text-lg md:text-xl text-zinc-400 max-w-2xl mb-12 font-light leading-relaxed animate-in slide-in-from-bottom-8 fade-in duration-1000 delay-300 px-4">
+        <p className="relative text-base sm:text-lg md:text-xl text-zinc-400 max-w-2xl mb-12 font-light leading-relaxed animate-in slide-in-from-bottom-8 fade-in duration-1000 delay-300 px-4 z-10">
           Bienvenido a <strong className="text-white font-bold">NODO</strong>. Olvídate del 30% de comisión. Un protocolo impulsado por <strong className="text-zinc-200 font-medium">Agentes de IA</strong> que negocian precios justos, asegurado por smart contracts en <strong className="text-zinc-200 font-medium">Blockchain</strong>.
         </p>
         
