@@ -16,11 +16,11 @@
 
 NODO es un **protocolo P2P de logística** que elimina a los intermediarios extractivos como Rappi o UberEats. En lugar de cobrar un 30% de comisión a los restaurantes, NODO usa:
 
-- 🤖 **Agentes de IA (Gemini)** para calcular tarifas de envío justas e imparciales basadas en tráfico, clima y distancia.
-- ⛓️ **Smart Contracts (Escrow)** para bloquear los fondos del cliente y liberarlos automáticamente al restaurante y repartidor solo al confirmar la entrega.
-- 🔐 **Verificación Anti-Fraude** con un PIN criptográfico de 6 dígitos que el cliente debe entregar al repartidor para desbloquear el pago on-chain.
+- 🤖 **Agentes de IA (Gemini)** para evaluar condiciones en tiempo real (tráfico, clima, distancia) y negociar tarifas de envío justas e imparciales al instante (Swarm Intelligence).
+- ⛓️ **Liquidación Atómica on-chain (Stellar Testnet)** usando un sistema de custodia (Escrow). Los fondos del cliente se bloquean criptográficamente y solo se liberan al restaurante y repartidor cuando se confirma la entrega. Todo con "Account Abstraction" para que el usuario no necesite saber de wallets.
+- 🔐 **Verificación Anti-Fraude** con un PIN de 6 dígitos que el cliente debe entregar al repartidor para desbloquear el pago en la blockchain.
 
-**Resultado**: Restaurantes ganan 100%. Repartidores ganan 100% de la tarifa. Comisión NODO: **0%**.
+**Resultado**: Restaurantes ganan 100% del precio de su menú. Repartidores ganan 100% de la tarifa de envío. Comisión NODO: **0%** (solo un pequeño "Network Fee" para mantener la infraestructura).
 
 ---
 
@@ -29,33 +29,33 @@ NODO es un **protocolo P2P de logística** que elimina a los intermediarios extr
 ```
 ┌──────────────────────────────────────────────────────┐
 │                     FRONTEND (Next.js 16)            │
-│  ┌─────────┐  ┌──────────┐  ┌─────────┐  ┌───────┐  │
-│  │ Landing  │  │ Customer │  │ Vendor  │  │Courier│  │
-│  │  Page    │  │   App    │  │Dashboard│  │  App  │  │
-│  └─────────┘  └────┬─────┘  └────┬────┘  └───┬───┘  │
-└─────────────────────┼────────────┼────────────┼──────┘
-                      │ REST API   │ WebSocket  │ REST
-                      ▼            ▼            ▼
+│  ┌─────────┐  ┌──────────┐  ┌─────────┐  ┌───────┐   │
+│  │ Landing │  │ Customer │  │ Vendor  │  │Courier│   │
+│  │  Page   │  │   App    │  │Dashboard│  │  App  │   │
+│  └─────────┘  └────┬─────┘  └────┬────┘  └───┬───┘   │
+└────────────────────┼─────────────┼───────────┼───────┘
+                     │ REST API    │ WebSocket │ REST
+                     ▼             ▼           ▼
 ┌──────────────────────────────────────────────────────┐
 │               BACKEND (Express + Socket.io)          │
 │  ┌──────────┐  ┌───────────┐  ┌──────────────────┐   │
 │  │ Auth     │  │ Order     │  │ AI Negotiation   │   │
-│  │ JWT+bcrypt│ │ Lifecycle │  │ (Gemini 3.8)     │   │
+│  │ JWT+bcrypt│ │ Lifecycle │  │ (Gemini 2.0)     │   │
 │  └──────────┘  └─────┬─────┘  └──────────────────┘   │
-│                      │                                │
-│            ┌─────────▼─────────┐                      │
-│            │   Prisma ORM      │                      │
-│            │   (SQLite DB)     │                      │
-│            └───────────────────┘                      │
-└──────────────────────────────────────────────────────┘
-                      │
-                      ▼
+│                      │                               │
+│            ┌─────────▼─────────┐                     │
+│            │   Prisma ORM      │                     │
+│            │   (SQLite DB)     │                     │
+│            └───────────────────┘                     │
+└──────────────────────┬───────────────────────────────┘
+                       │ Horizon API SDK
+                       ▼
 ┌──────────────────────────────────────────────────────┐
-│             SMART CONTRACT (Solidity)                │
+│                BLOCKCHAIN (Stellar Testnet)          │
 │  ┌──────────────────────────────────────────────┐    │
-│  │  P2PDeliveryEscrow.sol                       │    │
-│  │  deposit() → lockFunds → releaseFunds()      │    │
-│  │  Anti-fraud PIN verification on delivery      │    │
+│  │  Gasless Smart Accounts                      │    │
+│  │  lockEscrow() → manageData operation         │    │
+│  │  Atomic settlement via Stellar Network       │    │
 │  └──────────────────────────────────────────────┘    │
 └──────────────────────────────────────────────────────┘
 ```
@@ -66,13 +66,12 @@ NODO es un **protocolo P2P de logística** que elimina a los intermediarios extr
 
 | Capa | Tecnología |
 |------|-----------|
-| Frontend | Next.js 16, TypeScript, Tailwind CSS |
-| Backend | Express.js, Socket.io, Prisma ORM |
-| Base de Datos | SQLite (dev) / PostgreSQL (prod) |
-| IA | Google Gemini 3.8 Flash (Agente Logístico) |
-| Auth | JWT + bcrypt |
-| Smart Contract | Solidity 0.8.20, Hardhat |
-| Real-time | WebSockets (Socket.io) |
+| **Frontend** | Next.js 16, TypeScript, Tailwind CSS, Lucide Icons |
+| **Backend** | Express.js, Socket.io, Prisma ORM |
+| **Base de Datos** | SQLite (dev) |
+| **Inteligencia Artificial**| Google Gemini 2.0 Flash (Agente Logístico) |
+| **Blockchain** | Stellar SDK, Horizon Server (Testnet) |
+| **Seguridad** | JWT Auth, bcrypt, Gasless Smart Accounts |
 
 ---
 
@@ -94,9 +93,11 @@ cd backend && npm install && cd ..
 ### 2. Configurar variables de entorno
 
 ```bash
+# Crea un archivo .env en la carpeta backend/
 # backend/.env
 GEMINI_API_KEY=tu-api-key-de-gemini
-JWT_SECRET=nodo_secret_hackathon_2026
+STELLAR_SECRET_KEY=tu-llave-secreta-stellar-testnet
+PORT=3001
 ```
 
 ### 3. Inicializar base de datos
@@ -122,7 +123,7 @@ npm run dev
 
 ---
 
-## Flujo Demo
+## Flujo Demo para Jueces
 
 ### Credenciales de prueba
 
@@ -134,23 +135,24 @@ npm run dev
 
 ### El "Camino Feliz"
 
-1. **Abre 3 pestañas** en tu navegador
-2. **Pestaña 1** → `/auth` → Login como Cliente (demo@nodo.mx)
-3. **Pestaña 2** → `/auth` → Login como Restaurante (burger@nodo.mx)
-4. **Pestaña 3** → `/auth` → Login como Courier (courier@nodo.mx)
-5. **Como Cliente**: Elige un restaurante → Agrega items → Carrito → "Cotizar con IA" → "Confirmar y Pagar"
-6. **Como Restaurante**: Verás la orden aparecer en tiempo real → Click "Aceptar y Preparar"
-7. **Como Courier**: El viaje aparece → "Aceptar Viaje" → Ingresa el PIN del cliente → "Verificar y Cobrar"
-8. **Como Cliente**: Tu tracking se actualiza en vivo mostrando cada paso 🎉
+1. **Abre 3 ventanas de incógnito** en tu navegador.
+2. **Ventana 1 (Cliente)** → `/auth` → Login como Cliente (`demo@nodo.mx`).
+3. **Ventana 2 (Restaurante)** → `/auth` → Login como Restaurante (`burger@nodo.mx`). Encontrarás analíticas avanzadas de ahorro frente a plataformas tradicionales.
+4. **Ventana 3 (Repartidor)** → `/auth` → Login como Courier (`courier@nodo.mx`).
+5. **Como Cliente**: Elige un restaurante → Agrega items → Carrito → **"Cotizar con IA"** (verás cómo Gemini negocia la tarifa) → **"Confirmar y Pagar"**.
+6. **Magia Blockchain**: El backend hace un `lockEscrow` en la Testnet de Stellar. El Hash de transacción aparecerá en el perfil del cliente en su "Smart Account".
+7. **Como Restaurante**: Verás la orden aparecer con notificaciones Web nativas → Click "Aceptar y Preparar".
+8. **Como Courier**: El viaje aparece en tu tablero → "Aceptar Viaje" → Vas por la orden → Ingresa el PIN criptográfico del cliente → "Verificar y Cobrar".
+9. **Liquidación Atómica**: Los fondos se liberan en la Blockchain. Cero humanos, cero intermediarios.
 
 ---
 
 ## Equipo
 
-Proyecto creado para **GOYA Hack 2026** 🚀
+Proyecto creado con estándares AAA para **GOYA Hack 2026** 🚀
 
 ---
 
 <p align="center">
-  <em>NODO Protocol — El delivery del futuro no necesita intermediarios.</em>
+  <em>NODO Protocol — El ecosistema justo.</em>
 </p>
